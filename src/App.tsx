@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import LanguageProvider from "newDesign/components/LanguageProvider";
-import EntryScreen from "./screens";
+// import EntryScreen from "./screens";
 import NewDesignEntryScreen from "newDesign/screens";
 import { ServerAPI } from "./Config";
 // import Loading from "./components/Loader";

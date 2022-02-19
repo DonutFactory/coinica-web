@@ -1,6 +1,6 @@
 import React from "react";
 // import { Dropdown, DropdownButton } from "react-bootstrap";
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -14,7 +14,7 @@ import MenuList from '@material-ui/core/MenuList';
 import styles from "./DropdownCurrency.module.scss";
 
 // assets
-import BTC_ICON from "assets/imgs/btc_icon.png";
+// import BTC_ICON from "assets/imgs/btc_icon.png";
 import ETH_ICON from "assets/imgs/eth_icon.png";
 import USDC_ICON from "assets/imgs/usdc_icon.png";
 
