@@ -455,6 +455,55 @@ const GhostQuestGameplay = (props) => {
         setLoading({ state: false, text: '' })
       }
     }
+    else {
+      // check if character is alive then not continue..
+      if (params?.ghost_data?.value?.character_life == 0) {
+        const charBattles = [...params?.ghost_history?.sort((a, b) => a?.timeExecuted - b?.timeExecuted)]
+        const latestMatchIndex = charBattles.length
+        const latestMatch = { ...charBattles[latestMatchIndex - 1] }
+
+        let latestMatchLogs: any = []
+
+        if (latestMatch?.logs?.length) {
+          latestMatch?.logs?.forEach((log) => {
+            latestMatchLogs.push({ ...log })
+          })
+
+          latestMatch.logs = latestMatchLogs
+        }
+
+        if (latestMatchIndex) {
+          const enemyCharId = latestMatch?.loserID === userCharacterKey ? latestMatch?.winnerID : latestMatch?.loserID
+          console.log({ ENEMY_CHAR_ID: enemyCharId })
+
+          GetCharacterById(enemyCharId).then(res => {
+            let data: any = null
+            if (res.data.length) {
+              data = res?.data[0][0]
+            }
+
+            const flattenData = data !== null ? { ...data?.value, key: data?.key } : null
+            if (flattenData) {
+              setEnemyHP(flattenData?.hitpoints)
+            }
+            setEnemyCharData(flattenData)
+            setCharData({ ...userCharacterData, key: userCharacterKey })
+            setCharHP(userCharacterData?.hitpoints || 0)
+
+            setGhostHistory(charBattles)
+            setLatestMatch(latestMatch)
+          }).catch((err) => {
+            setEnemyCharData(null)
+            setEnemyHP(0)
+          }).finally(() => {
+            setLoading({ state: false, text: '' })
+          })
+        } else {
+          setEnemyCharData(null)
+          setLoading({ state: false, text: '' })
+        }
+      }
+    }
 
   }, [initialized, inBattle, params])
 
@@ -520,7 +569,7 @@ const GhostQuestGameplay = (props) => {
         }, 2000)
       }, 2000)
     } else if (latestMatch && enemyCharData === null) {
-      toast.error('Unable to fetch lastest match, see Ghost history for results')
+      toast.error('Unable to fetch latest match, see Ghost history for results')
       setEnemyFoundState(3)
       setAnimationPlaying(false)
     } else {
@@ -1002,15 +1051,18 @@ const GhostQuestGameplay = (props) => {
                       >
                         <div className={styles.ghostLife}>
                           <strong>
-                            {`${addedCharLife ? params?.ghost_data?.value?.character_life : charData?.character_life}`}
+                            {
+                              // `${addedCharLife ? params?.ghost_data?.value?.character_life : charData?.character_life}`
+                            }
                           </strong>
                           <br />
                           <div>
-                            {`
-                              ${addedCharLife
-                              ? params?.ghost_data?.value?.character_life > 1 ? 'Lives' : 'Life'
-                              : charData?.character_life > 1 ? 'Lives' : 'Life'}
-                            `}
+                            {
+                              // `${addedCharLife
+                              // ? params?.ghost_data?.value?.character_life > 1 ? 'Lives' : 'Life'
+                              // : charData?.character_life > 1 ? 'Lives' : 'Life'}`
+                              "PLAYER"
+                            }
                           </div>
                         </div>
                       </div>
@@ -1090,16 +1142,18 @@ const GhostQuestGameplay = (props) => {
                       >
                         <div className={styles.ghostLife}>
                           <strong>
-                          { loading.state && enemyCharData == null
-                            ? <CircularProgress style={{ color: "#FEE3A1" }} />
-                            : enemyCharData && enemyCharData?.character_life ? `${enemyCharData?.character_life}` : '0'
+                          {
+                            // loading.state && enemyCharData == null
+                            // ? <CircularProgress style={{ color: "#FEE3A1" }} />
+                            // : enemyCharData && enemyCharData?.character_life ? `${enemyCharData?.character_life}` : '0'
                           }
                           </strong>
                           <br />
                           <div>
-                            {`
-                              ${enemyCharData ? enemyCharData?.character_life > 1 ? 'Lives' : 'Life' : '---'}
-                            `}
+                            {
+                              // ${enemyCharData ? enemyCharData?.character_life > 1 ? 'Lives' : 'Life' : '---'}
+                              "ENEMY"
+                            }
                           </div>
                         </div>
                       </div>
